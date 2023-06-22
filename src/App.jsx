@@ -31,13 +31,27 @@ function App() {
   );
 
   const handleAddToCart = (product) => {
-    setCartItems((prevCartItems) => [...prevCartItems, product]);
+    setCartItems((prevCartItems) => {
+      const updatedCartItems = { ...prevCartItems };
+
+      if (updatedCartItems.hasOwnProperty(product.id)) {
+        // Si el producto ya existe en el carrito, incrementa la cantidad
+        updatedCartItems[product.id].quantity += 1;
+      } else {
+        // Si el producto no existe en el carrito, agrega uno nuevo con cantidad 1
+        updatedCartItems[product.id] = { ...product, quantity: 1 };
+      }
+
+      return { ...updatedCartItems };
+    });
   };
 
   const handleRemoveFromCart = (productId) => {
-    setCartItems((prevCartItems) =>
-      prevCartItems.filter((item) => item.id !== productId)
-    );
+    setCartItems((prevCartItems) => {
+      const updatedCartItems = { ...prevCartItems };
+      delete updatedCartItems[productId];
+      return { ...updatedCartItems };
+    });
   };
 
   return (
@@ -51,7 +65,7 @@ function App() {
       <div className="container">
         <div className="row">
           <div className="col-3">
-            <Carrito cartItems={cartItems} onRemoveFromCart={handleRemoveFromCart} />
+            <Carrito cartItems={Object.values(cartItems)} onRemoveFromCart={handleRemoveFromCart} />
           </div>
           <div className="col-8">
             <div className="row">
