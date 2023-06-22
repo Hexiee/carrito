@@ -9,6 +9,7 @@ function App() {
   const [busqueda, setBusqueda] = useState("");
   const [fetchedData, updateFetchedData] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  
 
   let api = "https://fakestoreapi.com/products";
 
@@ -31,18 +32,28 @@ function App() {
   );
 
   const handleAddToCart = (product) => {
+    // Validar el precio 
+    if (isNaN(product.price) || parseFloat(product.price) <= 0) {
+      alert("Ingrese un precio válido para el producto.");
+      return;
+    }
+  
+    // Validar nombre del producto 
+    if (product.title.trim() === "") {
+      alert("Ingrese un nombre válido para el producto.");
+      return;
+    }
+  
     setCartItems((prevCartItems) => {
       const updatedCartItems = { ...prevCartItems };
-
+  
       if (updatedCartItems.hasOwnProperty(product.id)) {
-        // Si el producto ya existe en el carrito, incrementa la cantidad
         updatedCartItems[product.id].quantity += 1;
       } else {
-        // Si el producto no existe en el carrito, agrega uno nuevo con cantidad 1
         updatedCartItems[product.id] = { ...product, quantity: 1 };
       }
-
-      return { ...updatedCartItems };
+  
+      return updatedCartItems;
     });
   };
 
@@ -53,6 +64,8 @@ function App() {
       return { ...updatedCartItems };
     });
   };
+
+  
 
   return (
     <div className="App">
