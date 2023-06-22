@@ -1,9 +1,14 @@
 import React from "react";
+// Importa otras dependencias si es necesario
 
-
-const Cards = ({ product }) => {
+const Cards = ({ product, onAddToCart }) => {
   const { id, image, title, category, rating, price } = product;
   const { rate, count } = rating;
+
+  const handleAddToCart = () => {
+    // Llama a la función onAddToCart y pasa el producto actual como argumento
+    onAddToCart(product);
+  };
 
   return (
     <div key={id} className="col-md-4 mb-4">
@@ -29,9 +34,9 @@ const Cards = ({ product }) => {
           <p className="card-text">
             <strong>Rating:</strong> {rate} (Count: {count})
           </p>
-          <a href="#" className="btn btn-primary">
-            Añadir
-          </a>
+          <button className="btn btn-primary" onClick={handleAddToCart}>
+            Añadir al carrito
+          </button>
         </div>
       </div>
     </div>
