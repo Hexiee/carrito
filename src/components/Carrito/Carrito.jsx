@@ -1,6 +1,7 @@
 import React from "react";
 import "./Carrito.css";
 
+//Se agrega a el carrito los productos
 const Carrito = ({ cartItems, onRemoveFromCart }) => {
   const totalProducts = Object.values(cartItems).reduce(
     (total, product) => total + product.quantity,

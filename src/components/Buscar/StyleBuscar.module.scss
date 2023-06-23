@@ -13,5 +13,24 @@
   .btn{
     box-shadow: 1px 3px 9px rgb(0, 0, 0);
 
+
   }
+  .mensajeExito {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: green;
+  }
+  .mensajeError {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: rgb(255, 12, 12);
+  }
+ 
+
   

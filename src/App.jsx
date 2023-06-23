@@ -30,6 +30,7 @@ function App() {
   }, []);
 
   /* Se va iniciar en cartItems en localStorage utilizando stringify  */
+  /* Se llaman en cartItems que fue definida en carrito para que cuando se reinicie la pagina los elementos del carrito no desaparescan*/
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);

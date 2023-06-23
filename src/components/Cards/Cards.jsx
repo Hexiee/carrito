@@ -1,6 +1,6 @@
 import React from "react";
 
-
+// Se llama los parametros de la api para que estos aparescan dentro de las tarjetas señaladas
 const Cards = ({ product, onAddToCart }) => {
   const { id, image, title, category, rating, price } = product;
   const { rate, count } = rating;
