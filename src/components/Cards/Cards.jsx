@@ -1,5 +1,5 @@
 import React from "react";
-// Importa otras dependencias si es necesario
+
 
 const Cards = ({ product, onAddToCart }) => {
   const { id, image, title, category, rating, price } = product;
@@ -24,11 +24,11 @@ const Cards = ({ product, onAddToCart }) => {
         <div className="card-body">
           <h1 className="card-title" style={{ fontSize: "14px", minHeight: "40px" }}>{title}</h1>
           <p className="card-text">
-            <strong className="text-danger">Category:</strong>{" "}
+            <strong className="text-danger">Categoria:</strong>{" "}
             <span className="text-danger">{category}</span>
           </p>
           <div className="card-price">
-            <strong>Price:</strong>{" "}
+            <strong>Precio:</strong>{" "}
             <span className="price-value">${price}</span>
           </div>
           <p className="card-text">

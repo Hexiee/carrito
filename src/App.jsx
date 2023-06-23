@@ -8,8 +8,10 @@ import Carrito from "./components/Carrito/Carrito";
 function App() {
   const [busqueda, setBusqueda] = useState("");
   const [fetchedData, updateFetchedData] = useState([]);
-  const [cartItems, setCartItems] = useState([]);
-  
+  const [cartItems, setCartItems] = useState(() => {
+    const storedCartItems = localStorage.getItem("cartItems");
+    return storedCartItems ? JSON.parse(storedCartItems) : [];
+  });
 
   let api = "https://fakestoreapi.com/products";
 
@@ -25,47 +27,44 @@ function App() {
     }
 
     fetchData();
-  }, [api]);
+  }, []);
 
-  const filteredData = fetchedData.filter((product) =>
-    product.title.toLowerCase().includes(busqueda.toLowerCase())
-  );
+  /* Se va iniciar en cartItems en localStorage utilizando stringify  */
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const handleAddToCart = (product) => {
-    // Validar el precio 
-    if (isNaN(product.price) || parseFloat(product.price) <= 0) {
-      alert("Ingrese un precio válido para el producto.");
-      return;
-    }
-  
-    // Validar nombre del producto 
-    if (product.title.trim() === "") {
-      alert("Ingrese un nombre válido para el producto.");
-      return;
-    }
-  
     setCartItems((prevCartItems) => {
-      const updatedCartItems = { ...prevCartItems };
-  
-      if (updatedCartItems.hasOwnProperty(product.id)) {
-        updatedCartItems[product.id].quantity += 1;
+      const updatedCartItems = [...prevCartItems];
+      const existingProductIndex = updatedCartItems.findIndex(
+        (item) => item.id === product.id
+      );
+
+      if (existingProductIndex !== -1) {
+        // Si el producto ya existe en el carrito, incrementa la cantidad
+        updatedCartItems[existingProductIndex].quantity += 1;
       } else {
-        updatedCartItems[product.id] = { ...product, quantity: 1 };
+        // Si el producto no existe en el carrito, agrega uno nuevo con cantidad 1
+        updatedCartItems.push({ ...product, quantity: 1 });
       }
-  
+
       return updatedCartItems;
     });
   };
 
   const handleRemoveFromCart = (productId) => {
     setCartItems((prevCartItems) => {
-      const updatedCartItems = { ...prevCartItems };
-      delete updatedCartItems[productId];
-      return { ...updatedCartItems };
+      const updatedCartItems = prevCartItems.filter(
+        (item) => item.id !== productId
+      );
+      return updatedCartItems;
     });
   };
 
-  
+  const filteredData = fetchedData.filter((product) =>
+    product.title.toLowerCase().includes(busqueda.toLowerCase())
+  );
 
   return (
     <div className="App">
@@ -78,7 +77,10 @@ function App() {
       <div className="container">
         <div className="row">
           <div className="col-3">
-            <Carrito cartItems={Object.values(cartItems)} onRemoveFromCart={handleRemoveFromCart} />
+            <Carrito
+              cartItems={cartItems}
+              onRemoveFromCart={handleRemoveFromCart}
+            />
           </div>
           <div className="col-8">
             <div className="row">
